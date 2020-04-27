@@ -1,0 +1,10 @@
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\bin\Debug\PCA.exe.config
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\bin\Debug\PCA.exe
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\bin\Debug\PCA.pdb
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\obj\Debug\PCA.csprojAssemblyReference.cache
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\obj\Debug\PCA.Form1.resources
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\obj\Debug\PCA.Properties.Resources.resources
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\obj\Debug\PCA.csproj.GenerateResource.cache
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\obj\Debug\PCA.csproj.CoreCompileInputs.cache
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\obj\Debug\PCA.exe
+C:\Users\anast\Documents\Computer-Vision\PCA\PCA\obj\Debug\PCA.pdb
