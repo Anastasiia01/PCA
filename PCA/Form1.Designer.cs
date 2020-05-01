@@ -107,6 +107,7 @@
             this.btnComputeEF.TabIndex = 12;
             this.btnComputeEF.Text = "Compute EF";
             this.btnComputeEF.UseVisualStyleBackColor = true;
+            this.btnComputeEF.Click += new System.EventHandler(this.btnComputeEF_Click);
             // 
             // picReconstructed
             // 

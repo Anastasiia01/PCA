@@ -48,5 +48,10 @@ namespace PCA
                 Console.Write("Please load the picture first");
             }
         }
+
+        private void btnComputeEF_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
