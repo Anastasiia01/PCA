@@ -13,35 +13,29 @@ namespace PCA
         public Bitmap ImgBitmap { get; set; }
         public String Filename { get; set; }
         public String Id { get; set; }
-        public Matrix imgVector; // 10000 x 1
-        public Matrix meanAdjustedVector;
+        public double[] imgVector; // 10000 x 1
+        public double[] meanAdjustedVector;
         public double[] projectedImgVector;
 
         public MyImage(Bitmap bmp, string filename)
         {
             this.ImgBitmap = bmp;
             this.Filename = filename;
-            this.imgVector = BitmapToMatrix(this.ImgBitmap);
+            this.imgVector = BitmapToArray(this.ImgBitmap);
             //this.meanAdjustedVector=
         }
 
-        public Matrix BitmapToArray(Bitmap bmp)
+        public double[] BitmapToArray(Bitmap bmp)
         {
-            double[][]vector = new double[2][3];
-
-            /*for(int i = 0; i < bmp.Height; i++)
+            double[] vector = new double[bmp.Width * bmp.Height];
+            for (int i = 0; i < bmp.Height; i++)
             {
-                for(int j = 0; j < bmp.Width; j++)
+                for (int j = 0; j < bmp.Width; j++)
                 {
-                    vector.data[i * (bmp.Width - 1) + j,1] = bmp.GetPixel(i, j).R;
-                
-            }*/
+                    vector[i * (bmp.Width) + j] = bmp.GetPixel(j, i).R;
+                }
+            }
             return vector;
-
         }
-
-
-
-
     }
 }

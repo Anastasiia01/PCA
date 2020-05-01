@@ -1,6 +1,7 @@
 ﻿using Mapack;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +16,14 @@ namespace PCA
         public Matrix Covarience { get; set; }
 
         public double[] MeanVector { get; set; }
+        public Bitmap AverageImage { get; set; }
 
         public PCA(List<MyImage> images)
         {
             this.TrainingSet = images;
             this.I = AssembleI(images);
             this.MeanVector = ComputeRowMean(I);
+            this.AverageImage = ArrayToBitmap(this.MeanVector,images[0].ImgBitmap.Width, images[0].ImgBitmap.Height);
 
         }
         public Matrix AssembleI(List<MyImage> images)
@@ -49,6 +52,23 @@ namespace PCA
                 sum = 0;
             }
             return meanVals;
+        }
+
+        public Bitmap ArrayToBitmap(double[] vector, int width,int height)
+        {
+            Bitmap bmp = new Bitmap(width, height);
+            //double[] vector = new double[bmp.Width * bmp.Height];
+            for (int i = 0; i < bmp.Height; i++)
+            {
+                for (int j = 0; j < bmp.Width; j++)
+                {
+                    int pixel = (int)vector[i * (bmp.Width) + j];
+                    bmp.SetPixel(j, i, Color.FromArgb(255, pixel, pixel, pixel));
+                }
+            }
+            return bmp;
+
+            return null;
         }
 
         //public void ApplyMean(List<MyImage> images) sets all MyImage.meanAdjustedVector
