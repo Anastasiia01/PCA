@@ -14,6 +14,7 @@ namespace PCA
     public partial class Form1 : Form
     {
         List<MyImage> trainingImages = new List<MyImage>();
+        PCA pca;
         public Form1()
         {
             InitializeComponent();
@@ -25,7 +26,7 @@ namespace PCA
             dialog.Filter = "jpeg files (*.jpg)|*.jpg|(*.gif)|gif||";
             if (DialogResult.OK == dialog.ShowDialog())
             {
-                MessageBox.Show(dialog.FileName);
+                //MessageBox.Show(dialog.FileName);
                 this.picOriginal.Image = new Bitmap(dialog.FileName);
                 FileInfo finfo = new FileInfo(dialog.FileName);
                 this.imgNameLabel.Text = finfo.Name;
@@ -43,7 +44,12 @@ namespace PCA
             {
                 Bitmap bmp = new Bitmap(this.picOriginal.Image);
                 String imageFullName = this.imgNameLabel.Text;
+                MessageBox.Show(imageFullName);
                 MyImage img = new MyImage(bmp, imageFullName);
+                img.meanAdjustedVector = pca.MeanAdjust(img.imgVector);
+                int[] adjustedToDisplay = pca.AdjustToDisplay(img.meanAdjustedVector);
+                Bitmap bmpMean = pca.ArrayToBitmap(adjustedToDisplay, bmp.Width, bmp.Height);
+                this.picMeanAdjusted.Image = bmpMean;
             }
             catch (Exception)
             {
@@ -51,11 +57,14 @@ namespace PCA
             }
         }
 
+
         private void btnComputeEF_Click(object sender, EventArgs e)
         {
             this.ReadData();//initializes List<MyImage> trainingImages
-            MyImage img = trainingImages[20];
-            this.picOriginal.Image = img.ImgBitmap;
+            pca = new PCA(trainingImages);
+            int[] meanToDisplay = pca.AdjustToDisplay(pca.MeanVector);
+            this.picAvgImage.Image = pca.ArrayToBitmap(meanToDisplay, trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height); 
+            //pca.
             //MessageBox.Show(img.imgVector.Length.ToString());
 
         }

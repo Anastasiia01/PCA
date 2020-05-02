@@ -13,8 +13,8 @@ namespace PCA
         public Bitmap ImgBitmap { get; set; }
         public String Filename { get; set; }
         public String Id { get; set; }
-        public double[] imgVector; // 10000 x 1
-        public double[] meanAdjustedVector;
+        public int[] imgVector; // 10000 x 1
+        public int[] meanAdjustedVector;
         public double[] projectedImgVector;
 
         public MyImage(Bitmap bmp, string filename)
@@ -25,9 +25,9 @@ namespace PCA
             //this.meanAdjustedVector=
         }
 
-        public double[] BitmapToArray(Bitmap bmp)
+        public int[] BitmapToArray(Bitmap bmp)
         {
-            double[] vector = new double[bmp.Width * bmp.Height];
+            int[] vector = new int[bmp.Width * bmp.Height];
             for (int i = 0; i < bmp.Height; i++)
             {
                 for (int j = 0; j < bmp.Width; j++)
@@ -37,5 +37,7 @@ namespace PCA
             }
             return vector;
         }
+
+
     }
 }

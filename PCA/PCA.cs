@@ -15,15 +15,15 @@ namespace PCA
         public Matrix I_avg { get; set; }
         public Matrix Covarience { get; set; }
 
-        public double[] MeanVector { get; set; }
-        public Bitmap AverageImage { get; set; }
+        public int[] MeanVector { get; set; }
+        //public Bitmap AverageImage { get; set; }
 
         public PCA(List<MyImage> images)
         {
             this.TrainingSet = images;
             this.I = AssembleI(images);
             this.MeanVector = ComputeRowMean(I);
-            this.AverageImage = ArrayToBitmap(this.MeanVector,images[0].ImgBitmap.Width, images[0].ImgBitmap.Height);
+            //this.AverageImage = ArrayToBitmap(this.MeanVector,images[0].ImgBitmap.Width, images[0].ImgBitmap.Height);
 
         }
         public Matrix AssembleI(List<MyImage> images)
@@ -38,9 +38,9 @@ namespace PCA
             }
             return I;
         }
-        public double[] ComputeRowMean(Matrix m)
+        public int[] ComputeRowMean(Matrix m)
         {
-            double[] meanVals = new double[m.Rows];
+            int[] meanVals = new int[m.Rows];
             double sum = 0;
             for(int i = 0; i < m.Rows; i++)
             {
@@ -48,30 +48,78 @@ namespace PCA
                 {
                     sum += m[i, j];
                 }
-                meanVals[i] = sum / m.Columns;
+                meanVals[i] = (int)sum / m.Columns;
                 sum = 0;
             }
             return meanVals;
         }
 
-        public Bitmap ArrayToBitmap(double[] vector, int width,int height)
+        public Bitmap ArrayToBitmap(int[] vector, int width,int height)
         {
             Bitmap bmp = new Bitmap(width, height);
-            //double[] vector = new double[bmp.Width * bmp.Height];
             for (int i = 0; i < bmp.Height; i++)
             {
                 for (int j = 0; j < bmp.Width; j++)
                 {
-                    int pixel = (int)vector[i * (bmp.Width) + j];
-                    bmp.SetPixel(j, i, Color.FromArgb(255, pixel, pixel, pixel));
+                    int pixel = vector[i * (bmp.Width) + j];
+                    bmp.SetPixel(j, i, Color.FromArgb(pixel, pixel, pixel));
                 }
             }
             return bmp;
-
-            return null;
         }
 
-        //public void ApplyMean(List<MyImage> images) sets all MyImage.meanAdjustedVector
+        public void ApplyMean(List<MyImage> images)// sets all MyImage.meanAdjustedVector
+        {
+            foreach(MyImage img in images)
+            {
+                img.meanAdjustedVector = MeanAdjust(img.imgVector);
+            }
+        }
+
+
+        public int[] MeanAdjust(int[] vector)
+        {
+            int[] adjusted = new int[vector.Length];
+            //double temp = 0;
+            try
+            {
+                for (int i = 0; i < vector.Length; i++)
+                {
+                    adjusted[i] = vector[i] - this.MeanVector[i];
+                    /*temp = vector[i] - this.MeanVector[i];
+                    if (temp < 0)
+                    {
+                        temp = 0;
+                    }
+                    adjusted[i] = temp;*/
+                }                
+            }
+            catch (Exception)
+            {
+                Console.Write("Mean and given vector have different dimensions");
+            }
+            return adjusted;
+        }
+
+        public int[] AdjustToDisplay(int[]vector)
+        {
+            int[] toDisplay = new int[vector.Length];
+            try
+            {
+                int min = vector.Min();
+                int max = vector.Max();
+                int denom = max - min;
+                for (int i = 0; i < vector.Length; i++)
+                {
+                    toDisplay[i] = (int)((vector[i] - min) * 255 / denom);
+                }
+            }
+            catch (Exception){
+                Console.Write("Given array is empty");
+            }
+            return toDisplay;
+
+        }
 
     }
 }
