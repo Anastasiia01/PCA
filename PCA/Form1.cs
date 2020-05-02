@@ -63,10 +63,10 @@ namespace PCA
             this.ReadData();//initializes List<MyImage> trainingImages
             pca = new PCA(trainingImages);
             int[] meanToDisplay = pca.AdjustToDisplay(pca.MeanVector);
-            this.picAvgImage.Image = pca.ArrayToBitmap(meanToDisplay, trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height); 
-            //pca.
-            //MessageBox.Show(img.imgVector.Length.ToString());
-
+            this.picAvgImage.Image = pca.ArrayToBitmap(meanToDisplay, trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            //MessageBox.Show((trainingImages[9].meanAdjustedVector[29]==pca.I_avg[29, 9]).ToString());
+            //MessageBox.Show(pca.I_avg.Rows.ToString());
+            //MessageBox.Show(pca.Covarience.Rows.ToString());
         }
 
         public void ReadData()

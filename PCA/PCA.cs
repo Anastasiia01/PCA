@@ -23,13 +23,17 @@ namespace PCA
             this.TrainingSet = images;
             this.I = AssembleI(images);
             this.MeanVector = ComputeRowMean(I);
+            this.ApplyMean(images);
+            this.I_avg = this.MeanAdjust(I);
+            this.Covarience = this.ComputeCov(I_avg);
+
             //this.AverageImage = ArrayToBitmap(this.MeanVector,images[0].ImgBitmap.Width, images[0].ImgBitmap.Height);
 
         }
         public Matrix AssembleI(List<MyImage> images)
         {
             Matrix I = new Matrix(images[0].imgVector.Length, images.Count);
-            for(int k=0;k<images.Count;k++)
+            for(int k=0;k<I.Columns;k++)
             {
                 for(int i = 0; i < I.Rows; i++)
                     {
@@ -77,26 +81,41 @@ namespace PCA
         }
 
 
+
         public int[] MeanAdjust(int[] vector)
         {
             int[] adjusted = new int[vector.Length];
-            //double temp = 0;
             try
             {
                 for (int i = 0; i < vector.Length; i++)
                 {
                     adjusted[i] = vector[i] - this.MeanVector[i];
-                    /*temp = vector[i] - this.MeanVector[i];
-                    if (temp < 0)
-                    {
-                        temp = 0;
-                    }
-                    adjusted[i] = temp;*/
                 }                
             }
             catch (Exception)
             {
                 Console.Write("Mean and given vector have different dimensions");
+            }
+            return adjusted;
+        }
+
+        public Matrix MeanAdjust(Matrix m)
+        {
+            Matrix adjusted = new Matrix(m.Rows,m.Columns);
+            try
+            {
+                for (int j = 0; j < adjusted.Columns; j++) 
+                {
+                    for (int i = 0; i < adjusted.Rows; i++)
+                    {
+                        adjusted[i,j] = m[i,j] - this.MeanVector[i];
+                    }
+                }
+                
+            }
+            catch (Exception)
+            {
+                Console.Write("Mean and given matrix.Rows have different dimensions");
             }
             return adjusted;
         }
@@ -118,7 +137,21 @@ namespace PCA
                 Console.Write("Given array is empty");
             }
             return toDisplay;
+        }
 
+        public Matrix ComputeCov(Matrix m)
+        {
+            Matrix Covarience;
+            Matrix mTranspose = m.Transpose();
+            if (m.Rows < m.Columns)
+            {
+                Covarience = m * mTranspose;
+            }
+            else
+            {
+                Covarience = mTranspose*m;
+            }
+            return Covarience;
         }
 
     }
