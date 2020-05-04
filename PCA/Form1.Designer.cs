@@ -78,6 +78,7 @@
             this.picMatch3.Location = new System.Drawing.Point(1080, 12);
             this.picMatch3.Name = "picMatch3";
             this.picMatch3.Size = new System.Drawing.Size(104, 124);
+            this.picMatch3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picMatch3.TabIndex = 5;
             this.picMatch3.TabStop = false;
             // 
@@ -86,6 +87,7 @@
             this.picEV0.Location = new System.Drawing.Point(230, 269);
             this.picEV0.Name = "picEV0";
             this.picEV0.Size = new System.Drawing.Size(164, 196);
+            this.picEV0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picEV0.TabIndex = 6;
             this.picEV0.TabStop = false;
             // 
@@ -114,6 +116,7 @@
             this.picReconstructed.Location = new System.Drawing.Point(530, 12);
             this.picReconstructed.Name = "picReconstructed";
             this.picReconstructed.Size = new System.Drawing.Size(155, 193);
+            this.picReconstructed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picReconstructed.TabIndex = 13;
             this.picReconstructed.TabStop = false;
             // 
@@ -130,6 +133,7 @@
             this.picMatch2.Location = new System.Drawing.Point(957, 12);
             this.picMatch2.Name = "picMatch2";
             this.picMatch2.Size = new System.Drawing.Size(104, 124);
+            this.picMatch2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picMatch2.TabIndex = 16;
             this.picMatch2.TabStop = false;
             // 
@@ -138,6 +142,7 @@
             this.picBestMatch.Location = new System.Drawing.Point(716, 12);
             this.picBestMatch.Name = "picBestMatch";
             this.picBestMatch.Size = new System.Drawing.Size(104, 124);
+            this.picBestMatch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBestMatch.TabIndex = 17;
             this.picBestMatch.TabStop = false;
             // 
@@ -146,6 +151,7 @@
             this.picMeanAdjusted.Location = new System.Drawing.Point(350, 12);
             this.picMeanAdjusted.Name = "picMeanAdjusted";
             this.picMeanAdjusted.Size = new System.Drawing.Size(155, 193);
+            this.picMeanAdjusted.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picMeanAdjusted.TabIndex = 18;
             this.picMeanAdjusted.TabStop = false;
             // 
@@ -154,6 +160,7 @@
             this.picOriginal.Location = new System.Drawing.Point(169, 12);
             this.picOriginal.Name = "picOriginal";
             this.picOriginal.Size = new System.Drawing.Size(155, 193);
+            this.picOriginal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picOriginal.TabIndex = 19;
             this.picOriginal.TabStop = false;
             // 
@@ -172,6 +179,7 @@
             this.picEV1.Location = new System.Drawing.Point(416, 269);
             this.picEV1.Name = "picEV1";
             this.picEV1.Size = new System.Drawing.Size(164, 196);
+            this.picEV1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picEV1.TabIndex = 21;
             this.picEV1.TabStop = false;
             // 
@@ -180,6 +188,7 @@
             this.picEV2.Location = new System.Drawing.Point(606, 269);
             this.picEV2.Name = "picEV2";
             this.picEV2.Size = new System.Drawing.Size(164, 196);
+            this.picEV2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picEV2.TabIndex = 22;
             this.picEV2.TabStop = false;
             // 
@@ -188,6 +197,7 @@
             this.picEV3.Location = new System.Drawing.Point(797, 269);
             this.picEV3.Name = "picEV3";
             this.picEV3.Size = new System.Drawing.Size(164, 196);
+            this.picEV3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picEV3.TabIndex = 23;
             this.picEV3.TabStop = false;
             // 
@@ -196,21 +206,23 @@
             this.picEV4.Location = new System.Drawing.Point(984, 269);
             this.picEV4.Name = "picEV4";
             this.picEV4.Size = new System.Drawing.Size(164, 196);
+            this.picEV4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picEV4.TabIndex = 24;
             this.picEV4.TabStop = false;
             // 
             // picAvgImage
             // 
-            this.picAvgImage.Location = new System.Drawing.Point(12, 286);
+            this.picAvgImage.Location = new System.Drawing.Point(12, 269);
             this.picAvgImage.Name = "picAvgImage";
-            this.picAvgImage.Size = new System.Drawing.Size(137, 166);
+            this.picAvgImage.Size = new System.Drawing.Size(122, 142);
+            this.picAvgImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picAvgImage.TabIndex = 25;
             this.picAvgImage.TabStop = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 455);
+            this.label1.Location = new System.Drawing.Point(17, 425);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(117, 20);
             this.label1.TabIndex = 26;
@@ -342,7 +354,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1214, 523);
+            this.ClientSize = new System.Drawing.Size(1209, 595);
             this.Controls.Add(this.btnTestImage);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label8);

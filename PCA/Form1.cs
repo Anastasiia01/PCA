@@ -47,7 +47,7 @@ namespace PCA
                 //MessageBox.Show(imageFullName);
                 MyImage img = new MyImage(bmp, imageFullName);
                 img.meanAdjustedVector = pca.MeanAdjust(img.imgVector);
-                int[] adjustedToDisplay = pca.AdjustToDisplay(img.meanAdjustedVector);
+                int[] adjustedToDisplay = AdjustToDisplay(img.meanAdjustedVector);
                 Bitmap bmpMean = pca.ArrayToBitmap(adjustedToDisplay, bmp.Width, bmp.Height);
                 this.picMeanAdjusted.Image = bmpMean;
             }
@@ -57,17 +57,39 @@ namespace PCA
             }
         }
 
+        public int[] AdjustToDisplay(double[] vector)
+        {
+            int[] toDisplay = new int[vector.Length];
+            try
+            {
+                double min = vector.Min();
+                double max = vector.Max();
+                double denom = max - min;
+                for (int i = 0; i < vector.Length; i++)
+                {
+                    toDisplay[i] = (int)((vector[i] - min) * 255 / denom);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Given array is empty");
+            }
+            return toDisplay;
+        }
+
 
         private void btnComputeEF_Click(object sender, EventArgs e)
         {
             this.ReadData();//initializes List<MyImage> trainingImages
-            pca = new PCA(trainingImages);
-            pca.Train();
-            int[] meanToDisplay = pca.AdjustToDisplay(pca.MeanVector);
+            pca = new PCA(trainingImages,30);
+            pca.Train();              
+            this.picEV0.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[0]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV1.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[1]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV2.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[2]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV3.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[3]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV4.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[4]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            int[] meanToDisplay = AdjustToDisplay(pca.MeanVector);
             this.picAvgImage.Image = pca.ArrayToBitmap(meanToDisplay, trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
-            //MessageBox.Show((trainingImages[9].meanAdjustedVector[29]==pca.I_avg[29, 9]).ToString());
-            //MessageBox.Show(pca.I_avg.Rows.ToString());
-            //MessageBox.Show(pca.Covarience.Rows.ToString());
         }
 
         public void ReadData()

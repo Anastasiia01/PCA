@@ -13,7 +13,7 @@ namespace PCA
         public String Filename { get; set; }
         public String Id { get; set; }
         public int[] imgVector; // 10000 x 1
-        public int[] meanAdjustedVector;
+        public double[] meanAdjustedVector;
         public double[] projectedImgVector;
 
         public MyImage(Bitmap bmp, string filename)
@@ -21,7 +21,6 @@ namespace PCA
             this.ImgBitmap = bmp;
             this.Filename = filename;
             this.imgVector = BitmapToArray(this.ImgBitmap);
-            //this.meanAdjustedVector=
         }
 
         public int[] BitmapToArray(Bitmap bmp)
