@@ -1,5 +1,4 @@
-﻿using Mapack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,7 +12,11 @@ namespace PCA
         public List<MyImage> TrainingSet { get; set; }
         public Matrix I { get; set; }
         public Matrix I_avg { get; set; }
-        public Matrix Covarience { get; set; }
+        public IMatrix Covarience { get; set; }
+
+        public IMatrix Evecs { get; set; }
+
+        public double[] Evals { get; set; }
 
         public int[] MeanVector { get; set; }
         //public Bitmap AverageImage { get; set; }
@@ -21,15 +24,22 @@ namespace PCA
         public PCA(List<MyImage> images)
         {
             this.TrainingSet = images;
-            this.I = AssembleI(images);
+        }
+
+        public void Train()
+        {
+            this.I = AssembleI(this.TrainingSet);
             this.MeanVector = ComputeRowMean(I);
-            this.ApplyMean(images);
+            this.ApplyMean(this.TrainingSet);
             this.I_avg = this.MeanAdjust(I);
             this.Covarience = this.ComputeCov(I_avg);
-
-            //this.AverageImage = ArrayToBitmap(this.MeanVector,images[0].ImgBitmap.Width, images[0].ImgBitmap.Height);
-
+            IEigenvalueDecomposition eigen = Covarience.GetEigenvalueDecomposition();
+            this.Evecs = new Matrix(Covarience.Rows, Covarience.Columns);//Covarience.Rows = Covarience.Columns
+            this.Evals = new double[Covarience.Rows];
+            this.Evecs = eigen.EigenvectorMatrix;
+            this.Evals = eigen.RealEigenvalues;
         }
+
         public Matrix AssembleI(List<MyImage> images)
         {
             Matrix I = new Matrix(images[0].imgVector.Length, images.Count);
@@ -139,17 +149,17 @@ namespace PCA
             return toDisplay;
         }
 
-        public Matrix ComputeCov(Matrix m)
+        public IMatrix ComputeCov(Matrix m)
         {
-            Matrix Covarience;
-            Matrix mTranspose = m.Transpose();
+            IMatrix Covarience;
+            IMatrix mTranspose = m.Transpose();
             if (m.Rows < m.Columns)
             {
-                Covarience = m * mTranspose;
+                Covarience = m.Multiply(mTranspose);
             }
             else
             {
-                Covarience = mTranspose*m;
+                Covarience = mTranspose.Multiply(m);
             }
             return Covarience;
         }

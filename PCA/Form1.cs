@@ -44,7 +44,7 @@ namespace PCA
             {
                 Bitmap bmp = new Bitmap(this.picOriginal.Image);
                 String imageFullName = this.imgNameLabel.Text;
-                MessageBox.Show(imageFullName);
+                //MessageBox.Show(imageFullName);
                 MyImage img = new MyImage(bmp, imageFullName);
                 img.meanAdjustedVector = pca.MeanAdjust(img.imgVector);
                 int[] adjustedToDisplay = pca.AdjustToDisplay(img.meanAdjustedVector);
@@ -62,6 +62,7 @@ namespace PCA
         {
             this.ReadData();//initializes List<MyImage> trainingImages
             pca = new PCA(trainingImages);
+            pca.Train();
             int[] meanToDisplay = pca.AdjustToDisplay(pca.MeanVector);
             this.picAvgImage.Image = pca.ArrayToBitmap(meanToDisplay, trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
             //MessageBox.Show((trainingImages[9].meanAdjustedVector[29]==pca.I_avg[29, 9]).ToString());
@@ -74,7 +75,9 @@ namespace PCA
             // Directory.EnumerateFiles Returns an enumerable collection of full file names in a specified path
             foreach (string file in Directory.EnumerateFiles("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Training"))
             {
-                this.trainingImages.Add(new MyImage(new Bitmap(file), file));
+                FileInfo finfo = new FileInfo(file);
+                String fileName = finfo.Name;
+                this.trainingImages.Add(new MyImage(new Bitmap(file), fileName));
             }
         }
     }
