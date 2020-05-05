@@ -46,10 +46,15 @@ namespace PCA
                 String imageFullName = this.imgNameLabel.Text;
                 //MessageBox.Show(imageFullName);
                 MyImage img = new MyImage(bmp, imageFullName);
+                MessageBox.Show(img.Id.ToString());
                 img.meanAdjustedVector = pca.MeanAdjust(img.imgVector);
-                int[] adjustedToDisplay = AdjustToDisplay(img.meanAdjustedVector);
-                Bitmap bmpMean = pca.ArrayToBitmap(adjustedToDisplay, bmp.Width, bmp.Height);
-                this.picMeanAdjusted.Image = bmpMean;
+                this.picMeanAdjusted.Image = ArrayToBitmap(AdjustToDisplay(img.meanAdjustedVector), bmp.Width, bmp.Height);
+                double[] recImg = pca.ComputeReconstructedImg(img);
+                this.picReconstructed.Image = ArrayToBitmap(AdjustToDisplay(recImg), bmp.Width, bmp.Height);
+                int bestMatchIdx = pca.GetBestMatch(img);
+                picBestMatch.Image = trainingImages[bestMatchIdx].ImgBitmap;
+                lbBestMatch.Text = trainingImages[bestMatchIdx].Id.ToString();
+
             }
             catch (Exception)
             {
@@ -77,19 +82,37 @@ namespace PCA
             return toDisplay;
         }
 
+        public Bitmap ArrayToBitmap(int[] vector, int width, int height)
+        {
+            Bitmap bmp = new Bitmap(width, height);
+            for (int i = 0; i < bmp.Height; i++)
+            {
+                for (int j = 0; j < bmp.Width; j++)
+                {
+                    int pixel = vector[i * (bmp.Width) + j];
+                    bmp.SetPixel(j, i, Color.FromArgb(pixel, pixel, pixel));
+                }
+            }
+            return bmp;
+        }
 
         private void btnComputeEF_Click(object sender, EventArgs e)
         {
             this.ReadData();//initializes List<MyImage> trainingImages
             pca = new PCA(trainingImages,30);
             pca.Train();              
-            this.picEV0.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[0]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
-            this.picEV1.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[1]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
-            this.picEV2.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[2]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
-            this.picEV3.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[3]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
-            this.picEV4.Image=pca.ArrayToBitmap(AdjustToDisplay(pca.Top5EF[4]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
-            int[] meanToDisplay = AdjustToDisplay(pca.MeanVector);
-            this.picAvgImage.Image = pca.ArrayToBitmap(meanToDisplay, trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV0.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[0]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV1.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[1]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV2.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[2]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV3.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[3]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picEV4.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[4]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            this.picAvgImage.Image = ArrayToBitmap(AdjustToDisplay(pca.MeanVector), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            //this.picOriginal.Image = ArrayToBitmap(trainingImages[7].imgVector, trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
+            
+            /*for(int i=0;i< trainingImages[0].projectedCoefVector.Length; i++)
+            {
+                MessageBox.Show(trainingImages[0].projectedCoefVector[i].ToString());
+            }*/
         }
 
         public void ReadData()

@@ -51,18 +51,126 @@ namespace PCA
             //Since our GetEigenvalueDecomposition() returns vectors in order of ascending eigen values,
             //we can use last ReducedDim columns of EigenVectorMatrix
             this.EV = Evecs.Submatrix(0, Evecs.Rows-1, Evecs.Columns - ReducedDim, Evecs.Columns - 1);//reduce to 30 top eigen vectors
-            NormalizeVectors(EV);
             if (I_avg.Rows > I_avg.Columns)
             {
                 this.EF = I_avg.Multiply(EV);
+                NormalizeVectors(EF);
             }
             else
-            {
                 this.EF = EV;
-            }
             this.Top5EF = GetTop5EF(this.EF);
+            this.ComputeReconstructed(this.TrainingSet);
+
+        }
+        public int GetBestMatch(MyImage test)//returns index of best match from the training set;
+        {
+            test.distances = new double[TrainingSet.Count];
+            test.distances[0] = GetDistance(test.projectedCoefVector, TrainingSet[0].projectedCoefVector);
+            double Mindistance = test.distances[0];
+            int MinIdx = 0;
+            for (int i=1;i< TrainingSet.Count;i++)
+            {
+                test.distances[i] = GetDistance(test.projectedCoefVector, TrainingSet[i].projectedCoefVector);
+                if(test.distances[i]< Mindistance)
+                {
+                    Mindistance = test.distances[i];
+                    MinIdx = i;
+                }
+            }
+
+            return MinIdx;
+        }
+
+        public double GetAccuracy()
+        {
+            return -1;
+        }
 
 
+        public int[] Get5ClosestMatches(MyImage test)
+        {
+            return new int[4];
+        }
+        public double GetDistance(double[]vec1, double[] vec2)
+        {
+            double d = 0;
+            try
+            {
+                for(int i = 0; i < vec1.Length; i++)
+                {
+                    d += (vec2[i] - vec1[i]) * (vec2[i] - vec1[i]);
+                }
+                d = Math.Sqrt(d);
+            }
+            catch (Exception) { }
+            return d;
+        }
+
+        public void ComputeReconstructed(List<MyImage> images)// sets all MyImage.projectedImgVector
+        {
+            IMatrix Projections = I_avg.Transpose().Multiply(EF);
+            for (int i = 0; i < Projections.Rows; i++)  
+            {
+                images[i].projectedCoefVector = new double[Projections.Columns];
+                for (int j = 0; j < Projections.Columns; j++)
+                {
+                    images[i].projectedCoefVector[j] = Projections[i, j];
+                }                
+            }
+        }
+
+        private void ComputeCoefToReconstruct(MyImage img)
+        {
+            IMatrix imgToReconstruct = ArrayToVerticalVector(img.meanAdjustedVector);
+            IMatrix coeff=imgToReconstruct.Transpose().Multiply(EF);//1 x reduced_dim
+            img.projectedCoefVector = HorizontalVectorToArray(coeff);//10000 x reduced_dim* reduced_dim x1
+        }
+
+        public double[] ComputeReconstructedImg(MyImage img)
+        {
+            
+            double[] reconstructedImg= new double[img.meanAdjustedVector.Length];
+            try
+            {
+                ComputeCoefToReconstruct(img);
+                IMatrix reconstructed = EF.Multiply(ArrayToVerticalVector(img.projectedCoefVector));
+                reconstructedImg = VerticalVectorToArray(reconstructed);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return reconstructedImg;
+        }
+
+        public IMatrix ArrayToVerticalVector(double[] vec)
+        {
+            IMatrix res = new Matrix(vec.Length, 1);
+            for (int i = 0; i < res.Rows; i++)
+            {
+                res[i, 0] = vec[i];
+            }
+            return res;
+        }
+        public double[] HorizontalVectorToArray(IMatrix m)
+        {
+            double[] vec = new double[m.Columns];
+            for (int i = 0; i < m.Columns; i++)
+            {
+                vec[i]=m[0, i];
+            }
+            return vec;
+        }
+
+        public double[] VerticalVectorToArray(IMatrix m)
+        {
+            double[] vec = new double[m.Rows];
+            for (int i = 0; i < m.Rows; i++)
+            {
+                vec[i] = m[i,0];
+            }
+            return vec;
+            //return HorizontalVectorToArray(m.Transpose()); less efficient, especially is m is big.
         }
 
         public double[][] GetTop5EF(IMatrix ef)
@@ -168,19 +276,7 @@ namespace PCA
             return meanVals;
         }
 
-        public Bitmap ArrayToBitmap(int[] vector, int width,int height)
-        {
-            Bitmap bmp = new Bitmap(width, height);
-            for (int i = 0; i < bmp.Height; i++)
-            {
-                for (int j = 0; j < bmp.Width; j++)
-                {
-                    int pixel = vector[i * (bmp.Width) + j];
-                    bmp.SetPixel(j, i, Color.FromArgb(pixel, pixel, pixel));
-                }
-            }
-            return bmp;
-        }
+        
 
         public void ApplyMean(List<MyImage> images)// sets all MyImage.meanAdjustedVector
         {

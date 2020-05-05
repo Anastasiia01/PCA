@@ -11,16 +11,21 @@ namespace PCA
     {
         public Bitmap ImgBitmap { get; set; }
         public String Filename { get; set; }
-        public String Id { get; set; }
+        public int Id { get; set; }
         public int[] imgVector; // 10000 x 1
         public double[] meanAdjustedVector;
-        public double[] projectedImgVector;
+        public double[] projectedCoefVector;//1 x reduced_dimensionsx
+
+        public double[] distances;
+        
 
         public MyImage(Bitmap bmp, string filename)
         {
             this.ImgBitmap = bmp;
             this.Filename = filename;
             this.imgVector = BitmapToArray(this.ImgBitmap);
+            int found = Filename.IndexOf("_");
+            this.Id= Int32.Parse(Filename.Substring(1,found-1));//substring(start,length)
         }
 
         public int[] BitmapToArray(Bitmap bmp)

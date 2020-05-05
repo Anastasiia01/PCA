@@ -48,7 +48,7 @@
             this.imgNameLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lbBestMatch = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -255,15 +255,15 @@
             this.label4.TabIndex = 29;
             this.label4.Text = "Reconstructed Image";
             // 
-            // label5
+            // lbBestMatch
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.label5.Location = new System.Drawing.Point(732, 151);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 20);
-            this.label5.TabIndex = 30;
-            this.label5.Text = "Best Match";
+            this.lbBestMatch.AutoSize = true;
+            this.lbBestMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.lbBestMatch.Location = new System.Drawing.Point(732, 151);
+            this.lbBestMatch.Name = "lbBestMatch";
+            this.lbBestMatch.Size = new System.Drawing.Size(90, 20);
+            this.lbBestMatch.TabIndex = 30;
+            this.lbBestMatch.Text = "Best Match";
             // 
             // label6
             // 
@@ -364,7 +364,7 @@
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lbBestMatch);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.imgNameLabel);
@@ -426,7 +426,7 @@
         private System.Windows.Forms.Label imgNameLabel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lbBestMatch;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label11;
