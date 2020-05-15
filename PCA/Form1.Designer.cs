@@ -35,7 +35,7 @@
             this.picBestMatch = new System.Windows.Forms.PictureBox();
             this.picMeanAdjusted = new System.Windows.Forms.PictureBox();
             this.picOriginal = new System.Windows.Forms.PictureBox();
-            this.btnGetAccuracy = new System.Windows.Forms.Button();
+            this.btnGetPCAaccuracy = new System.Windows.Forms.Button();
             this.picEV1 = new System.Windows.Forms.PictureBox();
             this.picEV2 = new System.Windows.Forms.PictureBox();
             this.picEV3 = new System.Windows.Forms.PictureBox();
@@ -51,7 +51,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.btnTestImage = new System.Windows.Forms.Button();
+            this.btnTestPCA = new System.Windows.Forms.Button();
             this.id0 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.picMatch1 = new System.Windows.Forms.PictureBox();
@@ -65,6 +65,8 @@
             this.id2 = new System.Windows.Forms.Label();
             this.id3 = new System.Windows.Forms.Label();
             this.id4 = new System.Windows.Forms.Label();
+            this.btnGetLDAaccuracy = new System.Windows.Forms.Button();
+            this.btnTestLDA = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picEV0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picReconstructed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBestMatch)).BeginInit();
@@ -92,7 +94,7 @@
             // 
             // btnLoadImage
             // 
-            this.btnLoadImage.Location = new System.Drawing.Point(12, 70);
+            this.btnLoadImage.Location = new System.Drawing.Point(12, 59);
             this.btnLoadImage.Name = "btnLoadImage";
             this.btnLoadImage.Size = new System.Drawing.Size(122, 41);
             this.btnLoadImage.TabIndex = 11;
@@ -146,15 +148,15 @@
             this.picOriginal.TabIndex = 19;
             this.picOriginal.TabStop = false;
             // 
-            // btnGetAccuracy
+            // btnGetPCAaccuracy
             // 
-            this.btnGetAccuracy.Location = new System.Drawing.Point(12, 183);
-            this.btnGetAccuracy.Name = "btnGetAccuracy";
-            this.btnGetAccuracy.Size = new System.Drawing.Size(122, 41);
-            this.btnGetAccuracy.TabIndex = 20;
-            this.btnGetAccuracy.Text = "Get Accuracy";
-            this.btnGetAccuracy.UseVisualStyleBackColor = true;
-            this.btnGetAccuracy.Click += new System.EventHandler(this.btnGetAccuracy_Click);
+            this.btnGetPCAaccuracy.Location = new System.Drawing.Point(12, 203);
+            this.btnGetPCAaccuracy.Name = "btnGetPCAaccuracy";
+            this.btnGetPCAaccuracy.Size = new System.Drawing.Size(122, 41);
+            this.btnGetPCAaccuracy.TabIndex = 20;
+            this.btnGetPCAaccuracy.Text = "PCA Accuracy";
+            this.btnGetPCAaccuracy.UseVisualStyleBackColor = true;
+            this.btnGetPCAaccuracy.Click += new System.EventHandler(this.btnGetPCAaccuracy_Click);
             // 
             // picEV1
             // 
@@ -194,7 +196,7 @@
             // 
             // picAvgImage
             // 
-            this.picAvgImage.Location = new System.Drawing.Point(12, 269);
+            this.picAvgImage.Location = new System.Drawing.Point(21, 323);
             this.picAvgImage.Name = "picAvgImage";
             this.picAvgImage.Size = new System.Drawing.Size(122, 142);
             this.picAvgImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -204,7 +206,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 425);
+            this.label1.Location = new System.Drawing.Point(26, 484);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(117, 20);
             this.label1.TabIndex = 26;
@@ -292,15 +294,15 @@
             this.label14.TabIndex = 41;
             this.label14.Text = "Eigen Vector 1";
             // 
-            // btnTestImage
+            // btnTestPCA
             // 
-            this.btnTestImage.Location = new System.Drawing.Point(12, 130);
-            this.btnTestImage.Name = "btnTestImage";
-            this.btnTestImage.Size = new System.Drawing.Size(122, 41);
-            this.btnTestImage.TabIndex = 42;
-            this.btnTestImage.Text = "Test Image";
-            this.btnTestImage.UseVisualStyleBackColor = true;
-            this.btnTestImage.Click += new System.EventHandler(this.btnTestImage_Click);
+            this.btnTestPCA.Location = new System.Drawing.Point(12, 106);
+            this.btnTestPCA.Name = "btnTestPCA";
+            this.btnTestPCA.Size = new System.Drawing.Size(122, 41);
+            this.btnTestPCA.TabIndex = 42;
+            this.btnTestPCA.Text = "Test via PCA";
+            this.btnTestPCA.UseVisualStyleBackColor = true;
+            this.btnTestPCA.Click += new System.EventHandler(this.btnTestPCA_Click);
             // 
             // id0
             // 
@@ -428,11 +430,33 @@
             this.id4.TabIndex = 59;
             this.id4.Text = "ID: ";
             // 
+            // btnGetLDAaccuracy
+            // 
+            this.btnGetLDAaccuracy.Location = new System.Drawing.Point(12, 250);
+            this.btnGetLDAaccuracy.Name = "btnGetLDAaccuracy";
+            this.btnGetLDAaccuracy.Size = new System.Drawing.Size(122, 41);
+            this.btnGetLDAaccuracy.TabIndex = 60;
+            this.btnGetLDAaccuracy.Text = "LDA Accuracy";
+            this.btnGetLDAaccuracy.UseVisualStyleBackColor = true;
+            this.btnGetLDAaccuracy.Click += new System.EventHandler(this.btnGetLDAaccuracy_Click);
+            // 
+            // btnTestLDA
+            // 
+            this.btnTestLDA.Location = new System.Drawing.Point(12, 153);
+            this.btnTestLDA.Name = "btnTestLDA";
+            this.btnTestLDA.Size = new System.Drawing.Size(122, 41);
+            this.btnTestLDA.TabIndex = 61;
+            this.btnTestLDA.Text = "Test via LDA";
+            this.btnTestLDA.UseVisualStyleBackColor = true;
+            this.btnTestLDA.Click += new System.EventHandler(this.btnTestLDA_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1336, 595);
+            this.Controls.Add(this.btnTestLDA);
+            this.Controls.Add(this.btnGetLDAaccuracy);
             this.Controls.Add(this.id4);
             this.Controls.Add(this.id3);
             this.Controls.Add(this.id2);
@@ -446,7 +470,7 @@
             this.Controls.Add(this.picMatch1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.id0);
-            this.Controls.Add(this.btnTestImage);
+            this.Controls.Add(this.btnTestPCA);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
@@ -462,7 +486,7 @@
             this.Controls.Add(this.picEV3);
             this.Controls.Add(this.picEV2);
             this.Controls.Add(this.picEV1);
-            this.Controls.Add(this.btnGetAccuracy);
+            this.Controls.Add(this.btnGetPCAaccuracy);
             this.Controls.Add(this.picOriginal);
             this.Controls.Add(this.picMeanAdjusted);
             this.Controls.Add(this.picBestMatch);
@@ -499,7 +523,7 @@
         private System.Windows.Forms.PictureBox picBestMatch;
         private System.Windows.Forms.PictureBox picMeanAdjusted;
         private System.Windows.Forms.PictureBox picOriginal;
-        private System.Windows.Forms.Button btnGetAccuracy;
+        private System.Windows.Forms.Button btnGetPCAaccuracy;
         private System.Windows.Forms.PictureBox picEV1;
         private System.Windows.Forms.PictureBox picEV2;
         private System.Windows.Forms.PictureBox picEV3;
@@ -515,7 +539,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Button btnTestImage;
+        private System.Windows.Forms.Button btnTestPCA;
         private System.Windows.Forms.Label id0;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox picMatch1;
@@ -529,6 +553,8 @@
         private System.Windows.Forms.Label id2;
         private System.Windows.Forms.Label id3;
         private System.Windows.Forms.Label id4;
+        private System.Windows.Forms.Button btnGetLDAaccuracy;
+        private System.Windows.Forms.Button btnTestLDA;
     }
 }
 

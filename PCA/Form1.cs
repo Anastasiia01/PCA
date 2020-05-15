@@ -15,6 +15,7 @@ namespace PCA
     {
         List<MyImage> trainingImages = new List<MyImage>();
         PCA pca;
+        LDA lda;
         public Form1()
         {
             InitializeComponent();
@@ -33,14 +34,14 @@ namespace PCA
             }
         }
 
-        private void btnGetAccuracy_Click(object sender, EventArgs e)
+        private void btnGetPCAaccuracy_Click(object sender, EventArgs e)
         {
             List<MyImage> testingImages = ReadData("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Testing");
             double accuracy=pca.GetAccuracy(testingImages);
             MessageBox.Show("Accuracy is "+accuracy.ToString("F")+"%");
         }
 
-        private void btnTestImage_Click(object sender, EventArgs e)
+        private void btnTestPCA_Click(object sender, EventArgs e)
         {
             try
             {
@@ -108,7 +109,7 @@ namespace PCA
         private void btnComputeEF_Click(object sender, EventArgs e)
         {
             this.trainingImages=this.ReadData("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Training");
-            pca = new PCA(trainingImages,30);
+            pca = new PCA(trainingImages,50);
             pca.Train();              
             this.picEV0.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[0]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
             this.picEV1.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[1]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
@@ -137,5 +138,16 @@ namespace PCA
             return imgList;
         }
 
+        private void btnGetLDAaccuracy_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnTestLDA_Click(object sender, EventArgs e)
+        {
+            this.trainingImages = this.ReadData("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Training");
+            lda = new LDA(trainingImages);
+            lda.GetProjectionMatrix();            
+        }
     }
 }
