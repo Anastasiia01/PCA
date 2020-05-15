@@ -28,13 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.picMatch3 = new System.Windows.Forms.PictureBox();
             this.picEV0 = new System.Windows.Forms.PictureBox();
             this.btnLoadImage = new System.Windows.Forms.Button();
             this.btnComputeEF = new System.Windows.Forms.Button();
             this.picReconstructed = new System.Windows.Forms.PictureBox();
-            this.picMatch1 = new System.Windows.Forms.PictureBox();
-            this.picMatch2 = new System.Windows.Forms.PictureBox();
             this.picBestMatch = new System.Windows.Forms.PictureBox();
             this.picMeanAdjusted = new System.Windows.Forms.PictureBox();
             this.picOriginal = new System.Windows.Forms.PictureBox();
@@ -48,21 +45,28 @@
             this.imgNameLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.lbBestMatch = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.btnTestImage = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.picMatch3)).BeginInit();
+            this.id0 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.picMatch1 = new System.Windows.Forms.PictureBox();
+            this.picMatch2 = new System.Windows.Forms.PictureBox();
+            this.picMatch3 = new System.Windows.Forms.PictureBox();
+            this.picMatch4 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.id1 = new System.Windows.Forms.Label();
+            this.id2 = new System.Windows.Forms.Label();
+            this.id3 = new System.Windows.Forms.Label();
+            this.id4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picEV0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picReconstructed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picMatch1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picMatch2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBestMatch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMeanAdjusted)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOriginal)).BeginInit();
@@ -71,16 +75,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.picEV3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEV4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picAvgImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMatch1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMatch2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMatch3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMatch4)).BeginInit();
             this.SuspendLayout();
-            // 
-            // picMatch3
-            // 
-            this.picMatch3.Location = new System.Drawing.Point(1080, 12);
-            this.picMatch3.Name = "picMatch3";
-            this.picMatch3.Size = new System.Drawing.Size(104, 124);
-            this.picMatch3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picMatch3.TabIndex = 5;
-            this.picMatch3.TabStop = false;
             // 
             // picEV0
             // 
@@ -120,28 +119,11 @@
             this.picReconstructed.TabIndex = 13;
             this.picReconstructed.TabStop = false;
             // 
-            // picMatch1
-            // 
-            this.picMatch1.Location = new System.Drawing.Point(837, 12);
-            this.picMatch1.Name = "picMatch1";
-            this.picMatch1.Size = new System.Drawing.Size(104, 124);
-            this.picMatch1.TabIndex = 15;
-            this.picMatch1.TabStop = false;
-            // 
-            // picMatch2
-            // 
-            this.picMatch2.Location = new System.Drawing.Point(957, 12);
-            this.picMatch2.Name = "picMatch2";
-            this.picMatch2.Size = new System.Drawing.Size(104, 124);
-            this.picMatch2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picMatch2.TabIndex = 16;
-            this.picMatch2.TabStop = false;
-            // 
             // picBestMatch
             // 
-            this.picBestMatch.Location = new System.Drawing.Point(716, 12);
+            this.picBestMatch.Location = new System.Drawing.Point(703, 31);
             this.picBestMatch.Name = "picBestMatch";
-            this.picBestMatch.Size = new System.Drawing.Size(104, 124);
+            this.picBestMatch.Size = new System.Drawing.Size(106, 129);
             this.picBestMatch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBestMatch.TabIndex = 17;
             this.picBestMatch.TabStop = false;
@@ -255,25 +237,15 @@
             this.label4.TabIndex = 29;
             this.label4.Text = "Reconstructed Image";
             // 
-            // lbBestMatch
-            // 
-            this.lbBestMatch.AutoSize = true;
-            this.lbBestMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.lbBestMatch.Location = new System.Drawing.Point(732, 151);
-            this.lbBestMatch.Name = "lbBestMatch";
-            this.lbBestMatch.Size = new System.Drawing.Size(90, 20);
-            this.lbBestMatch.TabIndex = 30;
-            this.lbBestMatch.Text = "Best Match";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.label6.Location = new System.Drawing.Point(855, 151);
+            this.label6.Location = new System.Drawing.Point(719, 204);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(75, 20);
+            this.label6.Size = new System.Drawing.Size(90, 20);
             this.label6.TabIndex = 31;
-            this.label6.Text = "Match #2";
+            this.label6.Text = "Best Match";
             // 
             // label9
             // 
@@ -311,26 +283,6 @@
             this.label13.TabIndex = 38;
             this.label13.Text = "Eigen Vector 4";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.label7.Location = new System.Drawing.Point(1094, 151);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(75, 20);
-            this.label7.TabIndex = 39;
-            this.label7.Text = "Match #4";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.label8.Location = new System.Drawing.Point(980, 151);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(75, 20);
-            this.label8.TabIndex = 40;
-            this.label8.Text = "Match #3";
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -350,21 +302,157 @@
             this.btnTestImage.UseVisualStyleBackColor = true;
             this.btnTestImage.Click += new System.EventHandler(this.btnTestImage_Click);
             // 
+            // id0
+            // 
+            this.id0.AutoSize = true;
+            this.id0.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.id0.Location = new System.Drawing.Point(736, 183);
+            this.id0.Name = "id0";
+            this.id0.Size = new System.Drawing.Size(34, 20);
+            this.id0.TabIndex = 43;
+            this.id0.Text = "ID: ";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.label2.Location = new System.Drawing.Point(854, 204);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(62, 20);
+            this.label2.TabIndex = 48;
+            this.label2.Text = "Match2";
+            // 
+            // picMatch1
+            // 
+            this.picMatch1.Location = new System.Drawing.Point(831, 31);
+            this.picMatch1.Name = "picMatch1";
+            this.picMatch1.Size = new System.Drawing.Size(106, 129);
+            this.picMatch1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picMatch1.TabIndex = 49;
+            this.picMatch1.TabStop = false;
+            // 
+            // picMatch2
+            // 
+            this.picMatch2.Location = new System.Drawing.Point(959, 31);
+            this.picMatch2.Name = "picMatch2";
+            this.picMatch2.Size = new System.Drawing.Size(106, 129);
+            this.picMatch2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picMatch2.TabIndex = 50;
+            this.picMatch2.TabStop = false;
+            // 
+            // picMatch3
+            // 
+            this.picMatch3.Location = new System.Drawing.Point(1084, 31);
+            this.picMatch3.Name = "picMatch3";
+            this.picMatch3.Size = new System.Drawing.Size(106, 129);
+            this.picMatch3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picMatch3.TabIndex = 51;
+            this.picMatch3.TabStop = false;
+            // 
+            // picMatch4
+            // 
+            this.picMatch4.Location = new System.Drawing.Point(1207, 31);
+            this.picMatch4.Name = "picMatch4";
+            this.picMatch4.Size = new System.Drawing.Size(106, 129);
+            this.picMatch4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picMatch4.TabIndex = 52;
+            this.picMatch4.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.label5.Location = new System.Drawing.Point(1109, 204);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(62, 20);
+            this.label5.TabIndex = 53;
+            this.label5.Text = "Match4";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.label7.Location = new System.Drawing.Point(980, 204);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(62, 20);
+            this.label7.TabIndex = 54;
+            this.label7.Text = "Match3";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.label8.Location = new System.Drawing.Point(1231, 204);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 20);
+            this.label8.TabIndex = 55;
+            this.label8.Text = "Match5";
+            // 
+            // id1
+            // 
+            this.id1.AutoSize = true;
+            this.id1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.id1.Location = new System.Drawing.Point(854, 183);
+            this.id1.Name = "id1";
+            this.id1.Size = new System.Drawing.Size(34, 20);
+            this.id1.TabIndex = 56;
+            this.id1.Text = "ID: ";
+            // 
+            // id2
+            // 
+            this.id2.AutoSize = true;
+            this.id2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.id2.Location = new System.Drawing.Point(980, 183);
+            this.id2.Name = "id2";
+            this.id2.Size = new System.Drawing.Size(34, 20);
+            this.id2.TabIndex = 57;
+            this.id2.Text = "ID: ";
+            // 
+            // id3
+            // 
+            this.id3.AutoSize = true;
+            this.id3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.id3.Location = new System.Drawing.Point(1109, 183);
+            this.id3.Name = "id3";
+            this.id3.Size = new System.Drawing.Size(34, 20);
+            this.id3.TabIndex = 58;
+            this.id3.Text = "ID: ";
+            // 
+            // id4
+            // 
+            this.id4.AutoSize = true;
+            this.id4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.id4.Location = new System.Drawing.Point(1231, 183);
+            this.id4.Name = "id4";
+            this.id4.Size = new System.Drawing.Size(34, 20);
+            this.id4.TabIndex = 59;
+            this.id4.Text = "ID: ";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1209, 595);
-            this.Controls.Add(this.btnTestImage);
-            this.Controls.Add(this.label14);
+            this.ClientSize = new System.Drawing.Size(1336, 595);
+            this.Controls.Add(this.id4);
+            this.Controls.Add(this.id3);
+            this.Controls.Add(this.id2);
+            this.Controls.Add(this.id1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.picMatch4);
+            this.Controls.Add(this.picMatch3);
+            this.Controls.Add(this.picMatch2);
+            this.Controls.Add(this.picMatch1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.id0);
+            this.Controls.Add(this.btnTestImage);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.lbBestMatch);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.imgNameLabel);
@@ -378,20 +466,14 @@
             this.Controls.Add(this.picOriginal);
             this.Controls.Add(this.picMeanAdjusted);
             this.Controls.Add(this.picBestMatch);
-            this.Controls.Add(this.picMatch2);
-            this.Controls.Add(this.picMatch1);
             this.Controls.Add(this.picReconstructed);
             this.Controls.Add(this.btnComputeEF);
             this.Controls.Add(this.btnLoadImage);
             this.Controls.Add(this.picEV0);
-            this.Controls.Add(this.picMatch3);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.picMatch3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEV0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picReconstructed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picMatch1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picMatch2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBestMatch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMeanAdjusted)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOriginal)).EndInit();
@@ -400,19 +482,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.picEV3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEV4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picAvgImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMatch1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMatch2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMatch3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMatch4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox picMatch3;
         private System.Windows.Forms.PictureBox picEV0;
         private System.Windows.Forms.Button btnLoadImage;
         private System.Windows.Forms.Button btnComputeEF;
         private System.Windows.Forms.PictureBox picReconstructed;
-        private System.Windows.Forms.PictureBox picMatch1;
-        private System.Windows.Forms.PictureBox picMatch2;
         private System.Windows.Forms.PictureBox picBestMatch;
         private System.Windows.Forms.PictureBox picMeanAdjusted;
         private System.Windows.Forms.PictureBox picOriginal;
@@ -426,16 +509,26 @@
         private System.Windows.Forms.Label imgNameLabel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label lbBestMatch;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button btnTestImage;
+        private System.Windows.Forms.Label id0;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.PictureBox picMatch1;
+        private System.Windows.Forms.PictureBox picMatch2;
+        private System.Windows.Forms.PictureBox picMatch3;
+        private System.Windows.Forms.PictureBox picMatch4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label id1;
+        private System.Windows.Forms.Label id2;
+        private System.Windows.Forms.Label id3;
+        private System.Windows.Forms.Label id4;
     }
 }
 

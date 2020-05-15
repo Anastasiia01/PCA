@@ -53,6 +53,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapack.cs" />
+    <Compile Include="Match.cs" />
     <Compile Include="MyImage.cs" />
     <Compile Include="PCA.cs" />
     <Compile Include="Program.cs" />

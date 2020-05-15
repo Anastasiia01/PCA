@@ -35,7 +35,9 @@ namespace PCA
 
         private void btnGetAccuracy_Click(object sender, EventArgs e)
         {
-            
+            List<MyImage> testingImages = ReadData("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Testing");
+            double accuracy=pca.GetAccuracy(testingImages);
+            MessageBox.Show("Accuracy is "+accuracy.ToString("F")+"%");
         }
 
         private void btnTestImage_Click(object sender, EventArgs e)
@@ -46,15 +48,22 @@ namespace PCA
                 String imageFullName = this.imgNameLabel.Text;
                 //MessageBox.Show(imageFullName);
                 MyImage img = new MyImage(bmp, imageFullName);
-                MessageBox.Show(img.Id.ToString());
                 img.meanAdjustedVector = pca.MeanAdjust(img.imgVector);
                 this.picMeanAdjusted.Image = ArrayToBitmap(AdjustToDisplay(img.meanAdjustedVector), bmp.Width, bmp.Height);
                 double[] recImg = pca.ComputeReconstructedImg(img);
                 this.picReconstructed.Image = ArrayToBitmap(AdjustToDisplay(recImg), bmp.Width, bmp.Height);
-                int bestMatchIdx = pca.GetBestMatch(img);
-                picBestMatch.Image = trainingImages[bestMatchIdx].ImgBitmap;
-                lbBestMatch.Text = trainingImages[bestMatchIdx].Id.ToString();
-
+                Match[] bestMatches = new Match[pca.TrainingSet.Count];
+                pca.Classify(img, ref bestMatches);
+                picBestMatch.Image = bestMatches[0].img.ImgBitmap;
+                id0.Text = bestMatches[0].id.ToString();
+                picMatch1.Image = bestMatches[1].img.ImgBitmap;
+                id1.Text = bestMatches[1].id.ToString();
+                picMatch2.Image = bestMatches[2].img.ImgBitmap;
+                id2.Text = bestMatches[2].id.ToString();
+                picMatch3.Image = bestMatches[3].img.ImgBitmap;
+                id3.Text = bestMatches[3].id.ToString();
+                picMatch4.Image = bestMatches[4].img.ImgBitmap;
+                id4.Text = bestMatches[4].id.ToString();
             }
             catch (Exception)
             {
@@ -98,7 +107,7 @@ namespace PCA
 
         private void btnComputeEF_Click(object sender, EventArgs e)
         {
-            this.ReadData();//initializes List<MyImage> trainingImages
+            this.trainingImages=this.ReadData("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Training");
             pca = new PCA(trainingImages,30);
             pca.Train();              
             this.picEV0.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[0]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
@@ -115,15 +124,18 @@ namespace PCA
             }*/
         }
 
-        public void ReadData()
+        private List<MyImage> ReadData(String dir)
         {
+            List<MyImage> imgList = new List<MyImage>();
             // Directory.EnumerateFiles Returns an enumerable collection of full file names in a specified path
-            foreach (string file in Directory.EnumerateFiles("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Training"))
+            foreach (string file in Directory.EnumerateFiles(dir))
             {
                 FileInfo finfo = new FileInfo(file);
                 String fileName = finfo.Name;
-                this.trainingImages.Add(new MyImage(new Bitmap(file), fileName));
+                imgList.Add(new MyImage(new Bitmap(file), fileName));
             }
+            return imgList;
         }
+
     }
 }

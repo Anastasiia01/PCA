@@ -12,14 +12,14 @@ namespace PCA
         public int ReducedDim {get;set;}
         public List<MyImage> TrainingSet { get; set; }
         public Matrix I { get; set; }
-        public IMatrix I_avg { get; set; }
-        public IMatrix Covarience { get; set; }
+        public Matrix I_avg { get; set; }
+        public Matrix Covarience { get; set; }
 
         public IMatrix Evecs { get; set; }
 
-        public IMatrix EV { get; set; }
+        public Matrix EV { get; set; }
 
-        public IMatrix EF { get; set; }
+        public Matrix EF { get; set; }
 
         public double[][] Top5EF;
         public double[] Evals { get; set; }
@@ -40,9 +40,7 @@ namespace PCA
             this.ApplyMean(this.TrainingSet);
             this.I_avg = this.MeanAdjust(I);
             this.Covarience = this.ComputeCov(I_avg);
-            IEigenvalueDecomposition eigen = Covarience.GetEigenvalueDecomposition();
-            this.Evecs = new Matrix(Covarience.Rows, Covarience.Columns);//Covarience.Rows = Covarience.Columns
-            this.Evals = new double[Covarience.Rows];
+            IEigenvalueDecomposition eigen = Covarience.GetEigenvalueDecomposition();          
             this.Evecs = eigen.EigenvectorMatrix;
             this.Evals = eigen.RealEigenvalues;
             //Reduce to top eigen vectors, first sort by eigen values and get top indices, then asseble them into EV
@@ -50,10 +48,10 @@ namespace PCA
             //  this.EV = this.GetTopEVecs(Evecs, topIndices);
             //Since our GetEigenvalueDecomposition() returns vectors in order of ascending eigen values,
             //we can use last ReducedDim columns of EigenVectorMatrix
-            this.EV = Evecs.Submatrix(0, Evecs.Rows-1, Evecs.Columns - ReducedDim, Evecs.Columns - 1);//reduce to 30 top eigen vectors
-            if (I_avg.Rows > I_avg.Columns)
+            this.EV = (Matrix)(Evecs.Submatrix(0, Evecs.Rows-1, Evecs.Columns - ReducedDim, Evecs.Columns - 1));//reduce to 30 top eigen vectors
+            if (I_avg.Rows > I_avg.Columns)//AT&T case
             {
-                this.EF = I_avg.Multiply(EV);
+                this.EF = (Matrix)I_avg.Multiply(EV);
                 NormalizeVectors(EF);
             }
             else
@@ -62,35 +60,151 @@ namespace PCA
             this.ComputeReconstructed(this.TrainingSet);
 
         }
-        public int GetBestMatch(MyImage test)//returns index of best match from the training set;
+
+        public Matrix AssembleI(List<MyImage> images)
+        {
+            Matrix I = new Matrix(images[0].imgVector.Length, images.Count);
+            for(int k=0;k<I.Columns;k++)
+            {
+                for(int i = 0; i < I.Rows; i++)
+                    {
+                        I[i, k] = images[k].imgVector[i];
+                    }
+            }
+            return I;
+        }
+
+        public double[] ComputeRowMean(Matrix m)
+        {
+            double[] meanVals = new double[m.Rows];
+            double sum = 0;
+            for (int i = 0; i < m.Rows; i++)
+            {
+                for (int j = 0; j < m.Columns; j++)
+                {
+                    sum += m[i, j];
+                }
+                meanVals[i] = sum / m.Columns;
+                sum = 0;
+            }
+            return meanVals;
+        }
+
+
+        public void ApplyMean(List<MyImage> images)// sets all MyImage.meanAdjustedVector
+        {
+            foreach (MyImage img in images)
+            {
+                img.meanAdjustedVector = MeanAdjust(img.imgVector);
+            }
+        }
+
+        public double[] MeanAdjust(int[] vector)
+        {
+            double[] adjusted = new double[vector.Length];
+            try
+            {
+                for (int i = 0; i < vector.Length; i++)
+                {
+                    adjusted[i] = vector[i] - this.MeanVector[i];
+                }
+            }
+            catch (Exception)
+            {
+                Console.Write("Mean and given vector have different dimensions");
+            }
+            return adjusted;
+        }
+
+        public Matrix MeanAdjust(Matrix m)
+        {
+            Matrix adjusted = new Matrix(m.Rows, m.Columns);
+            try
+            {
+                for (int j = 0; j < adjusted.Columns; j++)
+                {
+                    for (int i = 0; i < adjusted.Rows; i++)
+                    {
+                        adjusted[i, j] = m[i, j] - this.MeanVector[i];
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                Console.Write("Mean and given matrix.Rows have different dimensions");
+            }
+            return adjusted;
+        }
+
+        public Matrix ComputeCov(Matrix m)
+        {
+            Matrix Covarience;            
+            if (m.Rows <= m.Columns)
+            {
+                Covarience = (Matrix)(m.Multiply(m.Transpose()));
+            }
+            else//our AT&T case
+            {
+                Covarience = (Matrix)(m.Transpose().Multiply(m));
+            }
+            return Covarience;
+        }
+
+
+        /*public int Classify(MyImage test)//returns id of best match from the training set;
         {
             test.distances = new double[TrainingSet.Count];
+            test.meanAdjustedVector = MeanAdjust(test.imgVector);
+            ComputeCoefToReconstruct(test);
             test.distances[0] = GetDistance(test.projectedCoefVector, TrainingSet[0].projectedCoefVector);
             double Mindistance = test.distances[0];
             int MinIdx = 0;
-            for (int i=1;i< TrainingSet.Count;i++)
+            for (int i = 1; i < TrainingSet.Count; i++)
             {
                 test.distances[i] = GetDistance(test.projectedCoefVector, TrainingSet[i].projectedCoefVector);
-                if(test.distances[i]< Mindistance)
+                if (test.distances[i] < Mindistance)
                 {
                     Mindistance = test.distances[i];
                     MinIdx = i;
                 }
             }
+            return TrainingSet[MinIdx].Id;
+        }*/
 
-            return MinIdx;
-        }
-
-        public double GetAccuracy()
+        public double GetAccuracy(List<MyImage> testSet)
         {
-            return -1;
+            int count = 0;
+            foreach(MyImage img in testSet)
+            {
+                Match[] bestMatches = new Match[TrainingSet.Count];
+                if (img.Id == Classify(img, ref bestMatches))
+                {
+                    count++;
+                }
+            }
+            double accuracy = ((double)count / testSet.Count) * 100;
+            return accuracy;
         }
 
 
-        public int[] Get5ClosestMatches(MyImage test)
+        public int Classify(MyImage test,ref Match[] bestmatches)
         {
-            return new int[4];
+            test.meanAdjustedVector = MeanAdjust(test.imgVector);
+            ComputeCoefToReconstruct(test);
+            //returns index of best 5 matches from the training set;
+            Match[] matches = new Match[TrainingSet.Count];
+            double dist;
+            for (int i = 0; i < TrainingSet.Count; i++)
+            {                
+                dist = GetDistance(test.projectedCoefVector, TrainingSet[i].projectedCoefVector);
+                matches[i] = new Match(TrainingSet[i], dist);
+            }
+            Array.Sort(matches);
+            bestmatches = matches;
+            return matches[0].id;  
         }
+
         public double GetDistance(double[]vec1, double[] vec2)
         {
             double d = 0;
@@ -108,7 +222,7 @@ namespace PCA
 
         public void ComputeReconstructed(List<MyImage> images)// sets all MyImage.projectedImgVector
         {
-            IMatrix Projections = I_avg.Transpose().Multiply(EF);
+            Matrix Projections = (Matrix)(I_avg.Transpose().Multiply(EF));
             for (int i = 0; i < Projections.Rows; i++)  
             {
                 images[i].projectedCoefVector = new double[Projections.Columns];
@@ -121,9 +235,9 @@ namespace PCA
 
         private void ComputeCoefToReconstruct(MyImage img)
         {
-            IMatrix imgToReconstruct = ArrayToVerticalVector(img.meanAdjustedVector);
-            IMatrix coeff=imgToReconstruct.Transpose().Multiply(EF);//1 x reduced_dim
-            img.projectedCoefVector = HorizontalVectorToArray(coeff);//10000 x reduced_dim* reduced_dim x1
+            Matrix imgToReconstruct = ArrayToVerticalVector(img.meanAdjustedVector);
+            Matrix coeff=(Matrix)(imgToReconstruct.Transpose().Multiply(EF));//1 x reduced_dim = 1 x 30
+            img.projectedCoefVector = HorizontalVectorToArray(coeff);
         }
 
         public double[] ComputeReconstructedImg(MyImage img)
@@ -133,8 +247,8 @@ namespace PCA
             try
             {
                 ComputeCoefToReconstruct(img);
-                IMatrix reconstructed = EF.Multiply(ArrayToVerticalVector(img.projectedCoefVector));
-                reconstructedImg = VerticalVectorToArray(reconstructed);
+                Matrix reconstructed = (Matrix)(EF.Multiply(ArrayToVerticalVector(img.projectedCoefVector)));// 10000x1
+                reconstructedImg = VerticalVectorToArray(reconstructed);                
             }
             catch (Exception e)
             {
@@ -143,16 +257,16 @@ namespace PCA
             return reconstructedImg;
         }
 
-        public IMatrix ArrayToVerticalVector(double[] vec)
+        public Matrix ArrayToVerticalVector(double[] vec)
         {
-            IMatrix res = new Matrix(vec.Length, 1);
+            Matrix res = new Matrix(vec.Length, 1);
             for (int i = 0; i < res.Rows; i++)
             {
                 res[i, 0] = vec[i];
             }
             return res;
         }
-        public double[] HorizontalVectorToArray(IMatrix m)
+        public double[] HorizontalVectorToArray(Matrix m)
         {
             double[] vec = new double[m.Columns];
             for (int i = 0; i < m.Columns; i++)
@@ -162,7 +276,7 @@ namespace PCA
             return vec;
         }
 
-        public double[] VerticalVectorToArray(IMatrix m)
+        public double[] VerticalVectorToArray(Matrix m)
         {
             double[] vec = new double[m.Rows];
             for (int i = 0; i < m.Rows; i++)
@@ -173,7 +287,7 @@ namespace PCA
             //return HorizontalVectorToArray(m.Transpose()); less efficient, especially is m is big.
         }
 
-        public double[][] GetTop5EF(IMatrix ef)
+        public double[][] GetTop5EF(Matrix ef)
         {
             double[][] top5=new double[5][];
             double[] arr = new double[ef.Rows];
@@ -189,9 +303,8 @@ namespace PCA
             return top5;
         }
 
-        public void NormalizeVectors(IMatrix ev)
-        {
-            double[] magnitudes = new double[ev.Columns];
+        public void NormalizeVectors(Matrix ev)
+        {            
             double magnitude;
             for(int j = 0; j < ev.Columns; j++)
             {
@@ -200,10 +313,9 @@ namespace PCA
                 {
                     magnitude += ev[i, j] * ev[i, j];
                 }
-                magnitudes[j] = Math.Sqrt(magnitude);
                 for (int i = 0; i < ev.Rows; i++)
                 {
-                    ev[i,j] = ev[i, j]/magnitudes[j];
+                    ev[i,j] = ev[i, j]/ Math.Sqrt(magnitude);
                 }
             }
         }
@@ -246,100 +358,8 @@ namespace PCA
                 }
             }
             return Res;
-        }
+        }     
 
-        public Matrix AssembleI(List<MyImage> images)
-        {
-            Matrix I = new Matrix(images[0].imgVector.Length, images.Count);
-            for(int k=0;k<I.Columns;k++)
-            {
-                for(int i = 0; i < I.Rows; i++)
-                    {
-                        I[i, k] = images[k].imgVector[i];
-                    }
-            }
-            return I;
-        }
-        public double[] ComputeRowMean(Matrix m)
-        {
-            double[] meanVals = new double[m.Rows];
-            double sum = 0;
-            for(int i = 0; i < m.Rows; i++)
-            {
-                for (int j = 0; j < m.Columns; j++)
-                {
-                    sum += m[i, j];
-                }
-                meanVals[i] = sum / m.Columns;
-                sum = 0;
-            }
-            return meanVals;
-        }
-
-        
-
-        public void ApplyMean(List<MyImage> images)// sets all MyImage.meanAdjustedVector
-        {
-            foreach(MyImage img in images)
-            {
-                img.meanAdjustedVector = MeanAdjust(img.imgVector);
-            }
-        }
-
-        public double[] MeanAdjust(int[] vector)
-        {
-            double[] adjusted = new double[vector.Length];
-            try
-            {
-                for (int i = 0; i < vector.Length; i++)
-                {
-                    adjusted[i] = vector[i] - this.MeanVector[i];
-                }                
-            }
-            catch (Exception)
-            {
-                Console.Write("Mean and given vector have different dimensions");
-            }
-            return adjusted;
-        }
-
-        public Matrix MeanAdjust(Matrix m)
-        {
-            Matrix adjusted = new Matrix(m.Rows,m.Columns);
-            try
-            {
-                for (int j = 0; j < adjusted.Columns; j++) 
-                {
-                    for (int i = 0; i < adjusted.Rows; i++)
-                    {
-                        adjusted[i,j] = m[i,j] - this.MeanVector[i];
-                    }
-                }
-                
-            }
-            catch (Exception)
-            {
-                Console.Write("Mean and given matrix.Rows have different dimensions");
-            }
-            return adjusted;
-        }
-
-        
-
-        public IMatrix ComputeCov(IMatrix m)
-        {
-            IMatrix Covarience;
-            IMatrix mTranspose = m.Transpose();
-            if (m.Rows <= m.Columns)
-            {
-                Covarience = m.Multiply(mTranspose);
-            }
-            else
-            {
-                Covarience = mTranspose.Multiply(m);
-            }
-            return Covarience;
-        }
 
     }
 }
