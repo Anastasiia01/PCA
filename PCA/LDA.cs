@@ -26,12 +26,24 @@ namespace PCA
             SplitIntoClasses();//All classes[i] are initialized
             meanTotal = new Matrix(classes[0].lst[0].projectedCoefVector.Length, 1);
             Sw = new Matrix(classes[0].lst[0].projectedCoefVector.Length, classes[0].lst[0].projectedCoefVector.Length);
+            Sb = new Matrix(classes[0].lst[0].projectedCoefVector.Length, classes[0].lst[0].projectedCoefVector.Length);
             foreach (LDAclass myclass in classes)
             {
-                meanTotal = (Matrix)meanTotal.Addition(myclass.ComputeMean());
+                meanTotal = (Matrix) meanTotal.Addition(myclass.ComputeMean().Multiply(myclass.lst.Count));
                 Sw = (Matrix)Sw.Addition(myclass.ComputeSi());
             }
-
+            meanTotal = (Matrix)meanTotal.Multiply(1.0 / pca.TrainingSet.Count);
+            foreach (LDAclass myclass in classes)
+            {
+                Matrix meanDiff = (Matrix)myclass.Mean.Subtraction(meanTotal);
+                Sb = (Matrix)Sb.Addition(meanDiff.Multiply(meanDiff.Transpose()).Multiply(myclass.lst.Count));
+            }
+            Matrix SwInverse = (Matrix)Sw.Inverse;
+            Matrix Covarience = (Matrix)SwInverse.Multiply(Sb);
+            IEigenvalueDecomposition eigen = Covarience.GetEigenvalueDecomposition();
+            Matrix Evecs = (Matrix) eigen.EigenvectorMatrix;
+            double[]Evals = eigen.RealEigenvalues;
+            projectionMatrix= (Matrix)(Evecs.Submatrix(0, Evecs.Rows - 1, Evecs.Columns - classes.Length + 1, Evecs.Columns - 1));//reduce to 30 top eigen vectors
         }
 
         public void SplitIntoClasses()

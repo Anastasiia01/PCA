@@ -147,7 +147,9 @@ namespace PCA
         {
             this.trainingImages = this.ReadData("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Training");
             lda = new LDA(trainingImages);
-            lda.GetProjectionMatrix();            
+            lda.GetProjectionMatrix();
+            MessageBox.Show(lda.projectionMatrix.Rows.ToString() +" "+ lda.projectionMatrix.Columns.ToString());
+
         }
     }
 }
