@@ -22,7 +22,6 @@ namespace PCA
         {
             if (lst.Count != 0)
             {
-                //double[] mean = new double[lst[0].projectedCoefVector.Length];
                 Mean = new Matrix(lst[0].projectedCoefVector.Length, 1);//50 x 1 is our case
                 foreach(MyImage img in lst)
                 {
@@ -31,7 +30,7 @@ namespace PCA
                         Mean[i, 0] += img.projectedCoefVector[i];
                     }
                 }
-                Mean=(Matrix)Mean.Multiply(1.0/lst.Count);                
+                Mean = (Matrix)Mean.Multiply(1.0/lst.Count);                
             }
             return Mean;
         }

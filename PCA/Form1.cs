@@ -117,12 +117,6 @@ namespace PCA
             this.picEV3.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[3]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
             this.picEV4.Image=ArrayToBitmap(AdjustToDisplay(pca.Top5EF[4]), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
             this.picAvgImage.Image = ArrayToBitmap(AdjustToDisplay(pca.MeanVector), trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
-            //this.picOriginal.Image = ArrayToBitmap(trainingImages[7].imgVector, trainingImages[0].ImgBitmap.Width, trainingImages[0].ImgBitmap.Height);
-            
-            /*for(int i=0;i< trainingImages[0].projectedCoefVector.Length; i++)
-            {
-                MessageBox.Show(trainingImages[0].projectedCoefVector[i].ToString());
-            }*/
         }
 
         private List<MyImage> ReadData(String dir)
@@ -140,7 +134,12 @@ namespace PCA
 
         private void btnGetLDAaccuracy_Click(object sender, EventArgs e)
         {
-            
+            List<MyImage> testingImages = ReadData("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Testing");
+            //Match[] bestMatches = new Match[lda.pca.TrainingSet.Count];
+            double accuracy = lda.GetAccuracy(testingImages);
+
+            MessageBox.Show("Accuracy is " + accuracy.ToString("F") + "%");
+
         }
 
         private void btnTestLDA_Click(object sender, EventArgs e)
@@ -148,8 +147,27 @@ namespace PCA
             this.trainingImages = this.ReadData("C:/Users/anast/Documents/Computer-Vision/AttDataSet/ATTDataSet/Training");
             lda = new LDA(trainingImages);
             lda.GetProjectionMatrix();
-            MessageBox.Show(lda.projectionMatrix.Rows.ToString() +" "+ lda.projectionMatrix.Columns.ToString());
-
+            Bitmap bmp = new Bitmap(this.picOriginal.Image);
+            String imageFullName = this.imgNameLabel.Text;
+            MyImage img = new MyImage(bmp, imageFullName);
+            img.meanAdjustedVector = lda.pca.MeanAdjust(img.imgVector);
+            this.picMeanAdjusted.Image = ArrayToBitmap(AdjustToDisplay(img.meanAdjustedVector), bmp.Width, bmp.Height);
+            double[] recImg = lda.pca.ComputeReconstructedImg(img);
+            lda.ComputeProjectionCoef(img);
+            
+            Match[] bestMatches = new Match[lda.pca.TrainingSet.Count];
+            int idx=lda.ClassifyLDA(img, ref bestMatches);
+            picBestMatch.Image = bestMatches[0].img.ImgBitmap;
+            id0.Text = bestMatches[0].id.ToString();
+            picMatch1.Image = bestMatches[1].img.ImgBitmap;
+            id1.Text = bestMatches[1].id.ToString();
+            picMatch2.Image = bestMatches[2].img.ImgBitmap;
+            id2.Text = bestMatches[2].id.ToString();
+            picMatch3.Image = bestMatches[3].img.ImgBitmap;
+            id3.Text = bestMatches[3].id.ToString();
+            picMatch4.Image = bestMatches[4].img.ImgBitmap;
+            id4.Text = bestMatches[4].id.ToString();          
+            MessageBox.Show("Done");
         }
     }
 }

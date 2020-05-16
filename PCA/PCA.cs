@@ -14,7 +14,7 @@ namespace PCA
         public Matrix I { get; set; }
         public Matrix I_avg { get; set; }
         public Matrix Covarience { get; set; }
-
+        
         public IMatrix Evecs { get; set; }
 
         public Matrix EV { get; set; }
@@ -178,7 +178,8 @@ namespace PCA
             foreach(MyImage img in testSet)
             {
                 Match[] bestMatches = new Match[TrainingSet.Count];
-                if (img.Id == Classify(img, ref bestMatches))
+                int predictedId = Classify(img, ref bestMatches);
+                if (img.Id == predictedId)
                 {
                     count++;
                 }
@@ -192,7 +193,6 @@ namespace PCA
         {
             test.meanAdjustedVector = MeanAdjust(test.imgVector);
             ComputeCoefToReconstruct(test);
-            //returns index of best 5 matches from the training set;
             Match[] matches = new Match[TrainingSet.Count];
             double dist;
             for (int i = 0; i < TrainingSet.Count; i++)
@@ -233,7 +233,7 @@ namespace PCA
             }
         }
 
-        private void ComputeCoefToReconstruct(MyImage img)
+        public void ComputeCoefToReconstruct(MyImage img)
         {
             Matrix imgToReconstruct = ArrayToVerticalVector(img.meanAdjustedVector);
             Matrix coeff=(Matrix)(imgToReconstruct.Transpose().Multiply(EF));//1 x reduced_dim = 1 x 30
@@ -263,6 +263,16 @@ namespace PCA
             for (int i = 0; i < res.Rows; i++)
             {
                 res[i, 0] = vec[i];
+            }
+            return res;
+        }
+
+        public Matrix ArrayToHorizontalVector(double[] vec)
+        {
+            Matrix res = new Matrix(1, vec.Length);
+            for (int i = 0; i < res.Columns; i++)
+            {
+                res[0, i] = vec[i];
             }
             return res;
         }

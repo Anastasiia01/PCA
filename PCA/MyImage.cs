@@ -15,6 +15,7 @@ namespace PCA
         public int[] imgVector; // 10000 x 1
         public double[] meanAdjustedVector;
         public double[] projectedCoefVector;//1 x reduced_dimensionsx
+        public double[] ldaProjectionCoef;
         
 
         public MyImage(Bitmap bmp, string filename)

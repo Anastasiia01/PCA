@@ -14,6 +14,7 @@ namespace PCA
         public Matrix meanTotal;
         public Matrix projectionMatrix;//W*
         public PCA pca;
+        public double[] Evals;
         public LDA(List<MyImage> trainingSet)
         {
             pca = new PCA(trainingSet, 50);
@@ -42,10 +43,70 @@ namespace PCA
             Matrix Covarience = (Matrix)SwInverse.Multiply(Sb);
             IEigenvalueDecomposition eigen = Covarience.GetEigenvalueDecomposition();
             Matrix Evecs = (Matrix) eigen.EigenvectorMatrix;
-            double[]Evals = eigen.RealEigenvalues;
-            projectionMatrix= (Matrix)(Evecs.Submatrix(0, Evecs.Rows - 1, Evecs.Columns - classes.Length + 1, Evecs.Columns - 1));//reduce to 30 top eigen vectors
+            Evals = eigen.RealEigenvalues;
+            projectionMatrix= (Matrix)Evecs.Submatrix(0, Evecs.Rows - 1,0, classes.Length-1);//reduce to 30 top eigen vectors
+            pca.NormalizeVectors(projectionMatrix);
+            ProjectTrainingSet(pca.TrainingSet);
         }
 
+        public void ComputeProjectionCoef(MyImage img)
+        {
+            if (img.projectedCoefVector == null)
+            {
+                img.meanAdjustedVector = pca.MeanAdjust(img.imgVector);
+                pca.ComputeCoefToReconstruct(img);
+            }
+            Matrix vecToProject = pca.ArrayToHorizontalVector(img.projectedCoefVector);
+            Matrix coeff = (Matrix)(vecToProject.Multiply(projectionMatrix));
+            img.ldaProjectionCoef = pca.HorizontalVectorToArray(coeff);
+        }
+        public void ProjectTrainingSet(List<MyImage> images)// sets all MyImage.projectedImgVector
+        {
+            foreach(MyImage img in images)
+            {
+                ComputeProjectionCoef(img);
+            }
+        }
+
+        public int ClassifyLDA(MyImage test, ref Match[] bestmatches)
+        {
+            ComputeProjectionCoef(test);
+            Match[] matches = new Match[pca.TrainingSet.Count];
+            double dist;
+            int minIdx=0;
+            double mindist= pca.GetDistance(test.ldaProjectionCoef, pca.TrainingSet[0].ldaProjectionCoef);
+            for (int i = 0; i < pca.TrainingSet.Count; i++)
+            {
+                dist = pca.GetDistance(test.ldaProjectionCoef, pca.TrainingSet[i].ldaProjectionCoef);
+                if (dist < mindist)
+                {
+                    minIdx = i;
+                    mindist = dist;
+                }
+                matches[i] = new Match(pca.TrainingSet[i], dist);
+            }
+            Array.Sort(matches);
+            bestmatches = matches;
+            return matches[0].id;
+            //return minIdx;
+        }
+
+
+        public double GetAccuracy(List<MyImage> testSet)
+        {
+            int count = 0;
+            foreach (MyImage img in testSet)
+            {
+                Match[] bestMatches = new Match[pca.TrainingSet.Count];
+                int predictedId = ClassifyLDA(img, ref bestMatches);
+                if (img.Id == predictedId)
+                {
+                    count++;
+                }
+            }
+            double accuracy = ((double)count / testSet.Count) * 100;
+            return accuracy;
+        }
         public void SplitIntoClasses()
         {
             int imgId;
